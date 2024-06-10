@@ -65,3 +65,5 @@ If you want to mint ckBTC and allow user to send their Bitcoin directly to your 
 https://github.com/dfinity/ic/blob/4a3f022d4f7b0997ff5f02a0c384cb94715ecf2d/rs/bitcoin/ckbtc/minter/
 
 But don't be too enthusiastic because their still is a lot of work to do! Good luck and have fun :)
+
+Check out Roman Kashitsyn's blog https://mmapped.blog/posts. He is a former Dfinity Engineer and he know a lot of stuff when it comes to canister development. But I have to warn you, you will have to be quite focus if you want to understand something. 
