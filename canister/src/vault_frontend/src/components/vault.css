@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid; 
+    border-radius: 8px;
+    width: 200px;
+    height: 300px;
+}
+
+.vault-box {
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+
