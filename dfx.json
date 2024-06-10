@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "vault_backend": {
+      "candid": "src/vault_backend/vault_backend.did",
+      "package": "vault_backend",
+      "type": "rust"
+    },
+    "vault_frontend": {
+      "dependencies": [
+        "vault_backend"
+      ],
+      "source": [
+        "src/vault_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "vault_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
