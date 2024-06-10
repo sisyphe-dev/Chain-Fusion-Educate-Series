@@ -1,77 +1,32 @@
 # Chain Fusion Educate Series: Integrating ckBTC in DApps: A Comprehensive Guide with Taler
 
-You can find here the content of the workshop powered by Encode on their Educate Series. 
+You can find here the content of the workshop we did thanks to Encode and their Educate Series. To put a little bit of context for new comers, we based our work on the design of Collateral Debt Position stablecoins. The goal was to rebuild a vault with some collateral and debt and fetch the Bitcoin price to compute the collateral ratio. There should probably be a replay video on Encode's channel so you can check that out to fully understand what's going on. 
 
 The goal for you is to redo this canisters from scratch and make them work! 
 
-Here is the different steps: 
+Here are the different steps: 
 
-Run: `dfx new vault` in your terminal. It will setup everything for you. 
+Run: `dfx new vault` in your terminal. It will setup everything for you. Select `Rust` language for the backend. Add `React` for the frontend. Press `enter` (no selection). Then you should have a new `vault` repository that will be the base line for your work.  
 
-Then select Rust language 
+To check if everything is okay you can try to deploy the mock canisters by running `dfx start --clean --background` then `dfx deploy`. Then you can then click on both local http addresses and play with the canisters on your browser. 
 
-# `vault`
+Once you have done that, you can start changing things a bit. Go to the `lib.rs` file and modify it with the content written in this repository as well as the `vault_backend.did` and `cargo.toml` files. 
 
-Welcome to your new `vault` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+As you can see in the code, your `vault_backend` canister is calling another canister: `let xrc_principal = Principal::from_text("bkyz2-fmaaa-aaaaa-qaaaq-cai").unwrap();`. 
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+This canister is the **Exchange Rate Canister** and it allows us to fetch the Bitcoin price. This canister has been developped by the Dfinity Foundation and you can download the   `.wasm` and `.did` files here on the `xrc` folder. It is also available on their github:  https://github.com/dfinity/exchange-rate-canister. Go to `releases` to have the `.wasm` file and find the `.did` file in the code. Then you can add both files on a new folder `xrc` right next to your `vault_backend` canister. 
 
-To learn more before you start working with `vault`, see the following documentation available online:
+Next step is to declare this new canister by modifying your `dfx.json` file with the one written in this repository. 
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
+Okay, "theorically" you don't have to change your files now, you are good to go!
 
-If you want to start working on your project right away, you might want to try the following commands:
+Run `dfx start --clean` on terminal, open a new one and run `dfx deploy xrc` wait a little bit and run `dfx canister id xrc` to check that it matches the principal written in the `lib.rs` file.
 
-```bash
-cd vault/
-dfx help
-dfx canister --help
-```
+Happy? But it is software engineering so 99% chance it won't work. 
 
-## Running the project locally
+One thing is that the exchange rate canister is not supposed to run locally like that. While running `dfx start --clean` you might have seen those messages: "Using the default definition for the 'local' shared network because /Users/username/.config/dfx/networks.json does not define it." or "Using the default definition for the 'local' shared network because /Users/username/.config/dfx/networks.json not found."
 
-If you want to test your project locally, you can use the following commands:
-
-```bash
-# Starts the replica, running in the background
-dfx start --background
-
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
-
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
-
-If you have made changes to your backend canister, you can generate a new candid interface with
-
-```bash
-npm run generate
-```
-
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
-
-If you are making frontend changes, you can start a development server with
-
-```bash
-npm start
-```
-
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
-
-### Note on frontend environment variables
-
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
-
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
-
+You need to specify the local network. Run `touch /Users/username/.config/dfx/networks.json` then `nano /Users/username/.config/dfx/networks.json` and add this to the file: 
 
 {
   "local": {
@@ -82,3 +37,13 @@ If you are hosting frontend code somewhere without using DFX, you may need to ma
     }
   }
 }
+
+Second thing is that the Exchange Rate Canister requires cycles to run properly so you have to add some cycles by running: `dfx canister deposit-cycles 10_000_000_000_000 xrc`. 
+
+Once this is done, you can run the following commands again:
+
+`dfx start --clean`
+`dfx deploy xrc`
+`dfx deploy vault_backend`
+
+And try to collect the collateral ratio!s
