@@ -46,4 +46,22 @@ Once this is done, you can run the following commands again:
 `dfx deploy xrc`
 `dfx deploy vault_backend`
 
-And try to collect the collateral ratio!s
+And try to collect the collateral ratios! 
+
+
+# Go Deeper
+
+You correctly fetched the Bitcoin Price but you might want to actually deal with ckBTC transaction?
+
+You have to integrate the ckBTC_ledger canister from Dfinity's github: 
+
+.did: https://github.com/dfinity/ic/blob/master/rs/rosetta-api/icp_ledger/ledger.did
+
+.wasm: https://github.com/dfinity/ic/blob/4a3f022d4f7b0997ff5f02a0c384cb94715ecf2d/rs/rosetta-api/icrc1/ledger/README.adoc#L28
+
+
+If you want to mint ckBTC and allow user to send their Bitcoin directly to your app go check the minter canister:
+
+https://github.com/dfinity/ic/blob/4a3f022d4f7b0997ff5f02a0c384cb94715ecf2d/rs/bitcoin/ckbtc/minter/
+
+But don't be too enthusiastic because their still is a lot of work to do! Good luck and have fun :)
