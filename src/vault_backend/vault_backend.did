@@ -1,3 +1,10 @@
-service : {
-    "greet": (text) -> (text) query;
+type Vault = record {
+    ckbtc: nat64;
+    btal: nat64;
+}
+
+service: {
+    "open_vault": (nat64, nat64) -> ();
+    "get_collateral_ratio": (nat64) -> (float32);
+    "get_vaults": () -> (vec Vault) query;
 }
