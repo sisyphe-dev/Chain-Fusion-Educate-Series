@@ -1,29 +1,23 @@
 import { useState } from 'react';
 import { vault_backend } from 'declarations/vault_backend';
+import Vault from './components/vault';
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [vaults, setVaults] = useState([]);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    vault_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
+  vault_backend.get_vaults().then((vs) => {
+    setVaults(vs);
+  });
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
+    <main style={{display: 'flex', 
+      alignItems: 'center', 
+      flexDirection:'column', 
+      height:800}}>
+      <img src="/logo2.svg" alt="DFINITY logo" />  
+      {vaults.map((vault, index) => (
+        <Vault ckbtc={vault.ckbtc} btal={vault.btal} index={index} />
+      ))}
     </main>
   );
 }

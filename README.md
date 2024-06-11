@@ -49,6 +49,9 @@ Once this is done, you can run the following commands again:
 And try to collect the collateral ratios! 
 
 
+In addition, you can `dfx deploy vault_frontend` to see all the vaults in the application. 
+
+
 # Go Deeper
 
 You correctly fetched the Bitcoin Price but you might want to actually deal with ckBTC transaction?
